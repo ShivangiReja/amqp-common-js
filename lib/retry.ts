@@ -91,6 +91,20 @@ function validateRetryConfig<T>(config: RetryConfig<T>): void {
   }
 }
 
+
+async function checkInternet(): Promise<boolean> {
+  return new Promise((resolve) => {
+    require("dns").lookup("ms.portal.azure.com", function (err: any): void {
+      if (err && err.code === "ENOTFOUND") {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    });
+  });
+}
+
+
 /**
  * It will attempt to linearly retry an operation specified number of times with a specified
  * delay in between each retry. The retries will only happen if the error is retryable.
@@ -121,6 +135,11 @@ export async function retry<T>(config: RetryConfig<T>): Promise<T> {
     } catch (err) {
       if (!err.translated) {
         err = translate(err);
+      }
+      const isConnected = await checkInternet();
+      if (!isConnected) {
+        err.name = "ConnectionDetachError";
+        err.retryable = true;
       }
       lastError = err;
       log.error("[%s] Error occured for '%s' in attempt number %d: %O", config.connectionId,
