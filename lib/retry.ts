@@ -5,6 +5,7 @@ import { translate, MessagingError } from "./errors";
 import { delay } from ".";
 import * as log from "./log";
 import { defaultRetryAttempts, defaultDelayBetweenRetriesInSeconds } from "./util/constants";
+import { resolve } from "dns";
 
 /**
  * Determines whether the object is a Delivery object.
@@ -92,13 +93,13 @@ function validateRetryConfig<T>(config: RetryConfig<T>): void {
 }
 
 
-async function checkInternet(): Promise<boolean> {
-  return new Promise((resolve) => {
-    require("dns").lookup("ms.portal.azure.com", function (err: any): void {
-      if (err && err.code === "ENOTFOUND") {
-        resolve(false);
+async function checkNetworkConnection(): Promise<boolean> {
+  return new Promise((res) => {
+    resolve("ms.portal.azure.com", function (err: any): void {
+      if (err && err.code === "ECONNREFUSED") {
+        res(false);
       } else {
-        resolve(true);
+        res(true);
       }
     });
   });
@@ -136,7 +137,7 @@ export async function retry<T>(config: RetryConfig<T>): Promise<T> {
       if (!err.translated) {
         err = translate(err);
       }
-      const isConnected = await checkInternet();
+      const isConnected = await checkNetworkConnection();
       if (!isConnected) {
         err.name = "ConnectionDetachError";
         err.retryable = true;
