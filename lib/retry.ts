@@ -138,7 +138,7 @@ export async function retry<T>(config: RetryConfig<T>): Promise<T> {
         err = translate(err);
       }
       const isConnected = await checkNetworkConnection();
-      if (!isConnected && !err.retryable && err.name === 'ServiceCommunicationError') {
+      if (!isConnected && !err.retryable) {
         err.name = "ConnectionDetachError";
         err.retryable = true;
       }
