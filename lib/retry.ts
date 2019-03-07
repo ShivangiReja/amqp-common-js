@@ -137,10 +137,13 @@ export async function retry<T>(config: RetryConfig<T>): Promise<T> {
       if (!err.translated) {
         err = translate(err);
       }
-      const isConnected = await checkNetworkConnection();
-      if (!isConnected && !err.retryable && err.name === "ServiceCommunicationError") {
-        err.name = "ConnectionLostError";
-        err.retryable = true;
+
+      if (!err.retryable && err.name === "ServiceCommunicationError") {
+        const isConnected = await checkNetworkConnection();
+        if (!isConnected) {
+          err.name = "ConnectionLostError";
+          err.retryable = true;
+        }
       }
       lastError = err;
       log.error("[%s] Error occured for '%s' in attempt number %d: %O", config.connectionId,
