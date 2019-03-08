@@ -63,6 +63,11 @@ export interface RetryConfig<T> {
    * next attempt. Default: 15.
    */
   delayInSeconds?: number;
+  /**
+   * @property {string} connectionHost The host "<yournamespace>.servicebus.windows.net".
+   * Used to check network connectivity.
+   */
+  connectionHost?: string;
 }
 
 /**
@@ -93,9 +98,9 @@ function validateRetryConfig<T>(config: RetryConfig<T>): void {
 }
 
 
-async function checkNetworkConnection(): Promise<boolean> {
+async function checkNetworkConnection(host: string): Promise<boolean> {
   return new Promise((res) => {
-    resolve("ms.portal.azure.com", function (err: any): void {
+    resolve(host, function (err: any): void {
       if (err && err.code === "ECONNREFUSED") {
         res(false);
       } else {
@@ -138,8 +143,8 @@ export async function retry<T>(config: RetryConfig<T>): Promise<T> {
         err = translate(err);
       }
 
-      if (!err.retryable && err.name === "ServiceCommunicationError") {
-        const isConnected = await checkNetworkConnection();
+      if (!err.retryable && err.name === "ServiceCommunicationError" && config.connectionHost) {
+        const isConnected = await checkNetworkConnection(config.connectionHost);
         if (!isConnected) {
           err.name = "ConnectionLostError";
           err.retryable = true;
