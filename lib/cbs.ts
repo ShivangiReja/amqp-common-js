@@ -199,7 +199,7 @@ export class CbsClient {
 
   /**
    * Removes the AMQP cbs session to the EventHub/ServiceBus for this client,
-   * @return {Promise<void>}
+   * @returns {void} void
    */
   remove(): void {
     try {
