@@ -201,12 +201,12 @@ export class CbsClient {
    * Removes the AMQP cbs session to the EventHub/ServiceBus for this client,
    * @return {Promise<void>}
    */
-  async remove(): Promise<void> {
+  remove(): void {
     try {
       if (this._cbsSenderReceiverLink) {
         const cbsLink = this._cbsSenderReceiverLink;
         this._cbsSenderReceiverLink = undefined;
-        await cbsLink!.remove();
+        cbsLink!.remove();
         log.cbs("[%s] Successfully removed the cbs session.", this.connection.id);
       }
     } catch (err) {
