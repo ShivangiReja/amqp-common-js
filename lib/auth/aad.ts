@@ -2,7 +2,10 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 import {
-  ApplicationTokenCredentials, DeviceTokenCredentials, UserTokenCredentials, MSITokenCredentials
+  ApplicationTokenCredentials,
+  DeviceTokenCredentials,
+  UserTokenCredentials,
+  MSITokenCredentials
 } from "@azure/ms-rest-nodeauth";
 import { TokenInfo, TokenType, TokenProvider } from "./token";
 import * as Constants from "../util/constants";
@@ -15,7 +18,11 @@ export class AadTokenProvider implements TokenProvider {
   /**
    * @property {(ApplicationTokenCredentials | UserTokenCredentials | DeviceTokenCredentials | MSITokenCredentials)} credentials - The credentials object after successful authentication with AAD.
    */
-  credentials: ApplicationTokenCredentials | UserTokenCredentials | DeviceTokenCredentials | MSITokenCredentials;
+  credentials:
+    | ApplicationTokenCredentials
+    | UserTokenCredentials
+    | DeviceTokenCredentials
+    | MSITokenCredentials;
   /**
    * @property {number} tokenRenewalMarginInSeconds - The number of seconds within which it is
    * good to renew the token. A constant set to 270 seconds (4.5 minutes). Adal has a set window
@@ -29,8 +36,14 @@ export class AadTokenProvider implements TokenProvider {
    */
   readonly tokenValidTimeInSeconds: number = 3599;
 
-  constructor(credentials: ApplicationTokenCredentials | UserTokenCredentials | DeviceTokenCredentials | MSITokenCredentials) {
-    if (!credentials ||
+  constructor(
+    credentials:
+      | ApplicationTokenCredentials
+      | UserTokenCredentials
+      | DeviceTokenCredentials
+      | MSITokenCredentials
+  ) {
+    /* if (!credentials ||
       (credentials &&
         !(credentials instanceof ApplicationTokenCredentials ||
           credentials instanceof UserTokenCredentials ||
@@ -38,7 +51,7 @@ export class AadTokenProvider implements TokenProvider {
           credentials instanceof MSITokenCredentials))) {
       throw new Error("'credentials' is a required parameter and must be an instance of " +
         "ApplicationTokenCredentials | UserTokenCredentials | DeviceTokenCredentials | MSITokenCredentials.");
-    }
+    }*/
     if (credentials instanceof MSITokenCredentials) {
       credentials.resource = Constants.aadEventHubsAudience;
     }
@@ -57,8 +70,10 @@ export class AadTokenProvider implements TokenProvider {
     if (result.expiresOn && result.expiresOn instanceof Date) {
       expiresOn = result.expiresOn.getTime();
     }
-    const expiry = Math.floor(expiresOn / 1000) +
-      self.tokenValidTimeInSeconds - Constants.aadTokenValidityMarginSeconds;
+    const expiry =
+      Math.floor(expiresOn / 1000) +
+      self.tokenValidTimeInSeconds -
+      Constants.aadTokenValidityMarginSeconds;
     const tokenObj: TokenInfo = {
       expiry: expiry,
       tokenType: TokenType.CbsTokenTypeJwt,
