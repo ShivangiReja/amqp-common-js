@@ -81,10 +81,10 @@ export interface ConnectionConfig {
    */
   webSocketEndpointPath?: string;
   /***
-     * @property {any} {socketOptions} - Options to be passed to the function returned by
+     * @property {any} {webSocketConstructorOptions } - Options to be passed to the function returned by
      * rhea.websocket_connect()
      */
-  socketOptions?: any;
+  webSocketConstructorOptions?: any;
 }
 
 /**
