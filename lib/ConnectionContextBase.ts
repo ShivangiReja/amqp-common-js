@@ -140,7 +140,7 @@ export module ConnectionContextBase {
     if (userAgent.length > Constants.maxUserAgentLength) {
       throw new Error(
         `The user-agent string cannot be more than 128 characters in length.` +
-          `The given user-agent string is: ${userAgent} with length: ${userAgent.length}`
+        `The given user-agent string is: ${userAgent} with length: ${userAgent.length}`
       );
     }
 
@@ -168,11 +168,13 @@ export module ConnectionContextBase {
       const socket = parameters.config.webSocket || (window as any).WebSocket;
       const host = parameters.config.host;
       const endpoint = parameters.config.webSocketEndpointPath || "";
+      const socketOptions = parameters.config.webSocketConstructorOptions || "";
 
       connectionOptions.webSocketOptions = {
         webSocket: socket,
         url: `wss://${host}:443/${endpoint}`,
-        protocol: ["AMQPWSB10"]
+        protocol: ["AMQPWSB10"],
+        options: socketOptions
       };
     }
 
