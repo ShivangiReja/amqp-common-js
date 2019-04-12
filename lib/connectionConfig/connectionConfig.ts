@@ -61,10 +61,10 @@ export interface ConnectionConfig {
    * connection over WebSockets.
    */
   webSocketEndpointPath?: string;
-  /***
-     * @property {any} [webSocketConstructorOptions] - Options to be passed to the function returned by
-     * rhea.websocket_connect()
-     */
+
+  /**
+   * @property {any} [webSocketConstructorOptions] - Options to be passed to the WebSocket constructor
+   */
   webSocketConstructorOptions?: any;
 }
 
