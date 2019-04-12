@@ -168,7 +168,7 @@ export module ConnectionContextBase {
       const socket = parameters.config.webSocket || (window as any).WebSocket;
       const host = parameters.config.host;
       const endpoint = parameters.config.webSocketEndpointPath || "";
-      const socketOptions = parameters.config.webSocketConstructorOptions || "";
+      const socketOptions = parameters.config.webSocketConstructorOptions || {};
 
       connectionOptions.webSocketOptions = {
         webSocket: socket,
