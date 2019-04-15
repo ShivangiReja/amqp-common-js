@@ -11,7 +11,6 @@ import { SasTokenProvider } from "./auth/sas";
 import * as Constants from "./util/constants";
 import * as os from "os";
 import { isNode } from './util/utils';
-import * as log from "./log";
 
 /**
  * @interface ConnectionContextBase
@@ -162,10 +161,6 @@ export module ConnectionContextBase {
       },
       operationTimeoutInSeconds: parameters.operationTimeoutInSeconds
     };
-
-    log.connContext(`The user-agent string cannot be more than ${Constants.maxUserAgentLength} characters in length.` +
-      `The given user-agent string is: ${userAgent} with length: ${userAgent.length}`
-    );
 
     if (
       parameters.config.webSocket ||
