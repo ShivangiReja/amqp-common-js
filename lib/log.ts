@@ -37,3 +37,8 @@ export const retry = debugModule("azure:amqp-common:retry");
  * log statements for reqreslink
  */
 export const reqres = debugModule("azure:amqp-common:reqreslink");
+/**
+ * @ignore
+ * log statements for ConnectionContext
+ */
+export const connContext = debugModule("azure:amqp-common:connContext");
