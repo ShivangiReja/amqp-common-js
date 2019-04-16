@@ -78,7 +78,7 @@
     "dist/",
     "dist-esm/lib/",
     "lib/",
-    "typings/"
+    "typings/lib/"
   ],
   "scripts": {
     "tslint": "tslint -p . -c tslint.json --exclude examples/**/*.ts --exclude tests/**/*.ts",
