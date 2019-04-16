@@ -3,7 +3,7 @@
 
 ### 2019-3-22 1.0.0-preview.2
 - Added support for browser and websockets.
-- Fixed a connection related issue.
+- - A network connection lost error is now treated as retryable error. A new error with name `ConnectionLostError` is introduced for this scenario.
 
 ### 2019-1-15 1.0.0-preview.1
 - Enabled esModuleInterop flag for the TypeScript compiler.
