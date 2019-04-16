@@ -74,6 +74,7 @@
   "files": [
     "LICENSE",
     "changelog.md",
+    "browser/",
     "Readme.md",
     "dist/",
     "dist-esm/lib/",
