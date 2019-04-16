@@ -72,10 +72,7 @@
     "ws": "^6.2.0"
   },
   "files": [
-    "LICENSE",
-    "changelog.md",
     "browser/",
-    "Readme.md",
     "dist/",
     "dist-esm/lib/",
     "lib/",
