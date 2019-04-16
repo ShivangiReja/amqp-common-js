@@ -71,6 +71,19 @@
     "typescript": "^3.3.3",
     "ws": "^6.2.0"
   },
+  "files": [
+    ".travis.yml",
+    "karma.conf.js",
+    "rollup.base.config.js",
+    "rollup.config.js",
+    "rollup.test.config.js",
+    "tsconfig.json",
+    "tslint.json",
+    ".azure-pipelines",
+    "dist-esm/examples",
+    "dist-esm/tests",
+    "typings/tests"
+  ],
   "scripts": {
     "tslint": "tslint -p . -c tslint.json --exclude examples/**/*.ts --exclude tests/**/*.ts",
     "tsc": "tsc",

@@ -43,8 +43,6 @@ dist/examples/
 docs/
 documentation/
 typedoc/
-.azure-pipelines
-.travis.yml
 
 # coverage #
 .nyc_output
