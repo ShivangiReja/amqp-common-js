@@ -72,17 +72,13 @@
     "ws": "^6.2.0"
   },
   "files": [
-    ".travis.yml",
-    "karma.conf.js",
-    "rollup.base.config.js",
-    "rollup.config.js",
-    "rollup.test.config.js",
-    "tsconfig.json",
-    "tslint.json",
-    ".azure-pipelines",
-    "dist-esm/examples",
-    "dist-esm/tests",
-    "typings/tests"
+    "LICENSE",
+    "changelog.md",
+    "Readme.md",
+    "dist/",
+    "dist-esm/lib/",
+    "lib/",
+    "typings/"
   ],
   "scripts": {
     "tslint": "tslint -p . -c tslint.json --exclude examples/**/*.ts --exclude tests/**/*.ts",
