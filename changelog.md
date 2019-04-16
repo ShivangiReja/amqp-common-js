@@ -1,3 +1,10 @@
+### 2019-4-16 1.0.0-preview.3
+- Added support for proxy.
+
+### 2019-3-22 1.0.0-preview.2
+- Added support for browser and websockets.
+- Fixed a connection related issue.
+
 ### 2019-1-15 1.0.0-preview.1
 - Enabled esModuleInterop flag for the TypeScript compiler.
 
