@@ -179,6 +179,8 @@ export module ConnectionContextBase {
       };
     }
 
+    connectionOptions.id = -1123 as any;
+
     const connection = new Connection(connectionOptions);
     const connectionLock = `${Constants.establishConnection}-${generate_uuid()}`;
     const connectionContextBase: ConnectionContextBase = {
