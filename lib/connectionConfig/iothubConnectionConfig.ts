@@ -93,7 +93,7 @@ export namespace IotHubConnectionConfig {
     config.sharedAccessKey = String(config.sharedAccessKey);
 
     if (config.deviceId != undefined) {
-      config.entityPath = String(config.deviceId);
+      config.deviceId = String(config.deviceId);
     }
   }
   /**
