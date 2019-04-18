@@ -80,10 +80,6 @@ function validateRetryConfig<T>(config: RetryConfig<T>): void {
       "that returns a Promise.");
   }
 
-  if (!config.connectionId || typeof config.connectionId !== "string") {
-    throw new Error("'connectionId' is a required property and must be of type 'string'.");
-  }
-
   if (!config.operationType || typeof config.operationType !== "string") {
     throw new Error("'operationType' is a required property and must be of type 'string'.");
   }
