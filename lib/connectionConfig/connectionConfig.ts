@@ -125,7 +125,7 @@ export namespace ConnectionConfig {
     }
 
     if (options.isEntityPathRequired) {
-      throwTypeErrorIfParameterMissing("entityPath", config.entityPath);;
+      throwTypeErrorIfParameterMissing("entityPath", config.entityPath);
     }
 
     throwTypeErrorIfParameterMissing("sharedAccessKeyName", config.sharedAccessKeyName);
