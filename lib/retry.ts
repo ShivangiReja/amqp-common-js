@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-import { translate, MessagingError } from "./errors";
+import { translate, MessagingError, throwTypeErrorIfParameterMissing, throwTypeErrorIfParameterTypeMismatch } from "./errors";
 import { delay, isNode } from "./util/utils";
 import * as log from "./log";
 import { defaultRetryAttempts, defaultDelayBetweenRetriesInSeconds } from "./util/constants";
@@ -75,26 +75,23 @@ export interface RetryConfig<T> {
  * @ignore
  */
 function validateRetryConfig<T>(config: RetryConfig<T>): void {
-  if (!config.operation || typeof config.operation !== "function") {
-    throw new Error("'operation' is a required property and must be of type 'function' " +
-      "that returns a Promise.");
+  throwTypeErrorIfParameterMissing("operation", config.operation);
+  throwTypeErrorIfParameterTypeMismatch("operation", config.operation, "function");
+
+  throwTypeErrorIfParameterMissing("connectionId", config.connectionId);
+
+  throwTypeErrorIfParameterMissing("operationType", config.operationType);
+  throwTypeErrorIfParameterTypeMismatch("operationType", config.operationType, "string");
+
+
+  if (config.times) {
+    throwTypeErrorIfParameterTypeMismatch("times", config.times, "number");
   }
 
-  if (!config.connectionId || typeof config.connectionId !== "string") {
-    throw new Error("'connectionId' is a required property and must be of type 'string'.");
+  if (config.delayInSeconds) {
+    throwTypeErrorIfParameterTypeMismatch("delayInSeconds", config.delayInSeconds, "number");
   }
 
-  if (!config.operationType || typeof config.operationType !== "string") {
-    throw new Error("'operationType' is a required property and must be of type 'string'.");
-  }
-
-  if (config.times && typeof config.times !== "number") {
-    throw new Error("'times' must be of type 'number'.");
-  }
-
-  if (config.delayInSeconds && typeof config.delayInSeconds !== "number") {
-    throw new Error("'delayInSeconds' must be of type 'number'.");
-  }
 }
 
 

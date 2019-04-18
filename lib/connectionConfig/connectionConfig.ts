@@ -3,6 +3,7 @@
 
 import { parseConnectionString, ServiceBusConnectionStringModel } from "../util/utils";
 import { WebSocketImpl } from "rhea-promise";
+import { throwTypeErrorIfParameterMissing, throwTypeErrorIfParameterTypeMismatch } from "../errors";
 
 /**
  * Describes the options that can be provided while creating a connection config.
@@ -83,9 +84,9 @@ export namespace ConnectionConfig {
    * @returns {ConnectionConfig} ConnectionConfig
    */
   export function create(connectionString: string, path?: string): ConnectionConfig {
-    if (!connectionString || (connectionString && typeof connectionString !== "string")) {
-      throw new Error("'connectionString' is a required parameter and must be of type: 'string'.");
-    }
+    throwTypeErrorIfParameterMissing("connectionString", connectionString);
+    connectionString = String(connectionString);
+
     const parsedCS = parseConnectionString<ServiceBusConnectionStringModel>(connectionString);
     if (!parsedCS.Endpoint) {
       throw new Error("Connection string is missing Endpoint.");
@@ -112,25 +113,25 @@ export namespace ConnectionConfig {
    */
   export function validate(config: ConnectionConfig, options?: ConnectionConfigOptions): void {
     if (!options) options = {};
-    if (!config || (config && typeof config !== "object")) {
-      throw new Error("'config' is a required parameter and must be of type: 'object'.");
+
+    throwTypeErrorIfParameterMissing("config", config);
+    throwTypeErrorIfParameterTypeMismatch("config", config, "object");
+
+    throwTypeErrorIfParameterMissing("endpoint", config.endpoint);
+    config.endpoint = String(config.endpoint);
+
+    if (config.entityPath) {
+      config.entityPath = String(config.entityPath);
     }
-    if (!config.endpoint || (config.endpoint && typeof config.endpoint !== "string")) {
-      throw new Error("'endpoint' is a required property of ConnectionConfig.");
+
+    if (options.isEntityPathRequired) {
+      throwTypeErrorIfParameterMissing("entityPath", config.entityPath);;
     }
-    if (config.entityPath && typeof config.entityPath !== "string") {
-      throw new Error("'entityPath' must be of type 'string'.");
-    }
-    if (options.isEntityPathRequired && !config.entityPath) {
-      throw new Error("'entityPath' is a required property of ConnectionConfig.");
-    }
-    if (!config.sharedAccessKeyName ||
-      (config.sharedAccessKeyName && typeof config.sharedAccessKeyName !== "string")) {
-      throw new Error("'sharedAccessKeyName' is a required property of ConnectionConfig.");
-    }
-    if (!config.sharedAccessKey ||
-      (config.sharedAccessKey && typeof config.sharedAccessKey !== "string")) {
-      throw new Error("'sharedAccessKey' is a required property of ConnectionConfig.");
-    }
+
+    throwTypeErrorIfParameterMissing("sharedAccessKeyName", config.sharedAccessKeyName);
+    config.sharedAccessKeyName = String(config.sharedAccessKeyName);
+
+    throwTypeErrorIfParameterMissing("sharedAccessKey", config.sharedAccessKey);
+    config.sharedAccessKey = String(config.sharedAccessKey);
   }
 }
