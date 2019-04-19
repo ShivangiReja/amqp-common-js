@@ -3,7 +3,6 @@
 
 import { parseConnectionString, ServiceBusConnectionStringModel } from "../util/utils";
 import { WebSocketImpl } from "rhea-promise";
-import { throwTypeErrorIfParameterMissing, throwTypeErrorIfParameterTypeMismatch } from "../errors";
 
 /**
  * Describes the options that can be provided while creating a connection config.
@@ -84,7 +83,6 @@ export namespace ConnectionConfig {
    * @returns {ConnectionConfig} ConnectionConfig
    */
   export function create(connectionString: string, path?: string): ConnectionConfig {
-    throwTypeErrorIfParameterMissing("connectionString", connectionString);
     connectionString = String(connectionString);
 
     const parsedCS = parseConnectionString<ServiceBusConnectionStringModel>(connectionString);
@@ -114,24 +112,37 @@ export namespace ConnectionConfig {
   export function validate(config: ConnectionConfig, options?: ConnectionConfigOptions): void {
     if (!options) options = {};
 
-    throwTypeErrorIfParameterMissing("config", config);
-    throwTypeErrorIfParameterTypeMismatch("config", config, "object");
+    if (!config) {
+      throw new TypeError("Missing configuration");
+    }
 
-    throwTypeErrorIfParameterMissing("endpoint", config.endpoint);
+    if (!config.endpoint) {
+      throw new TypeError("Missing 'endpoint' in configuration");
+    }
     config.endpoint = String(config.endpoint);
 
     if (config.entityPath) {
       config.entityPath = String(config.entityPath);
     }
 
-    if (options.isEntityPathRequired) {
-      throwTypeErrorIfParameterMissing("entityPath", config.entityPath);
+    if (config.host) {
+      config.host = String(config.host);
     }
 
-    throwTypeErrorIfParameterMissing("sharedAccessKeyName", config.sharedAccessKeyName);
+    if (options.isEntityPathRequired) {
+      if (!config.entityPath) {
+        throw new TypeError("Missing 'entityPath' in configuration");
+      }
+    }
+
+    if (!config.sharedAccessKeyName) {
+      throw new TypeError("Missing 'sharedAccessKeyName' in configuration");
+    }
     config.sharedAccessKeyName = String(config.sharedAccessKeyName);
 
-    throwTypeErrorIfParameterMissing("sharedAccessKey", config.sharedAccessKey);
+    if (!config.sharedAccessKey) {
+      throw new TypeError("Missing 'sharedAccessKey' in configuration");
+    }
     config.sharedAccessKey = String(config.sharedAccessKey);
   }
 }

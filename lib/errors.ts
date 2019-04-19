@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 import { AmqpResponseStatusCode, isAmqpError, AmqpError } from "rhea-promise";
-import * as log from "./log";
 
 /**
  * Maps the conditions to the numeric AMQP Response status codes.
@@ -570,40 +569,4 @@ export function translate(err: AmqpError | Error): MessagingError {
     error.stack = (err as Error).stack;
   }
   return error;
-}
-/**
- * @internal
- * Logs and Throws TypeError if given parameter is undefined or null
- * @param parameterName Name of the parameter to check
- * @param parameterValue Value of the parameter to check
- */
-export function throwTypeErrorIfParameterMissing(
-  parameterName: string,
-  parameterValue: any
-): void {
-  if (parameterValue === undefined || parameterValue === null) {
-    const error = new TypeError(`Missing parameter "${parameterName}"`);
-    log.error(error);
-    throw error;
-  }
-}
-/**
- * @internal
- * Logs and Throws TypeError if given parameter is not of expected type
- * @param parameterName Name of the parameter to type check
- * @param parameterValue Value of the parameter to type check
- * @param expectedType Expected type of the parameter
- */
-export function throwTypeErrorIfParameterTypeMismatch(
-  parameterName: string,
-  parameterValue: any,
-  expectedType: string
-): void {
-  if (typeof parameterValue !== expectedType) {
-    const error = new TypeError(
-      `The parameter "${parameterName}" should be of type "${expectedType}"`
-    );
-    log.error(error);
-    throw error;
-  }
 }

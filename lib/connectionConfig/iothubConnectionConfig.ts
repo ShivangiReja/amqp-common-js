@@ -3,7 +3,6 @@
 
 import { ConnectionConfig, EventHubConnectionConfig } from ".";
 import { parseConnectionString, IotHubConnectionStringModel } from "../util/utils";
-import { throwTypeErrorIfParameterMissing, throwTypeErrorIfParameterTypeMismatch } from "../errors";
 
 /**
  * @interface IotHubConnectionConfig
@@ -52,7 +51,6 @@ export namespace IotHubConnectionConfig {
    * @param {string} [path]           - The name/path of the entity (hub name) to which the connection needs to happen
    */
   export function create(connectionString: string, path?: string): IotHubConnectionConfig {
-    throwTypeErrorIfParameterMissing("connectionString", connectionString);
     connectionString = String(connectionString);
 
     const parsedCS = parseConnectionString<IotHubConnectionStringModel>(connectionString);
@@ -77,22 +75,32 @@ export namespace IotHubConnectionConfig {
    * @param {ConnectionConfig} config The connection config to be validated.
    */
   export function validate(config: IotHubConnectionConfig): void {
-    throwTypeErrorIfParameterMissing("config", config);
-    throwTypeErrorIfParameterTypeMismatch("config", config, "object");
+    if (!config) {
+      throw new TypeError("Missing configuration");
+    }
 
-    throwTypeErrorIfParameterMissing("hostName", config.hostName);
+    if (!config.hostName) {
+      throw new TypeError("Missing 'hostName' in configuration");
+    }
     config.hostName = String(config.hostName);
 
-    throwTypeErrorIfParameterMissing("entityPath", config.entityPath);
+
+    if (!config.entityPath) {
+      throw new TypeError("Missing 'entityPath' in configuration");
+    }
     config.entityPath = String(config.entityPath);
 
-    throwTypeErrorIfParameterMissing("sharedAccessKeyName", config.sharedAccessKeyName);
+    if (!config.sharedAccessKeyName) {
+      throw new TypeError("Missing 'sharedAccessKeyName' in configuration");
+    }
     config.sharedAccessKeyName = String(config.sharedAccessKeyName);
 
-    throwTypeErrorIfParameterMissing("sharedAccessKey", config.sharedAccessKey);
+    if (!config.sharedAccessKey) {
+      throw new TypeError("Missing 'sharedAccessKey' in configuration");
+    }
     config.sharedAccessKey = String(config.sharedAccessKey);
 
-    if (config.deviceId != undefined) {
+    if (config.deviceId) {
       config.deviceId = String(config.deviceId);
     }
   }
@@ -102,9 +110,6 @@ export namespace IotHubConnectionConfig {
    * @param {IotHubConnectionConfig} iotHubConfig
    */
   export function convertToEventHubConnectionConfig(iotHubConfig: IotHubConnectionConfig): EventHubConnectionConfig {
-    throwTypeErrorIfParameterMissing("iotHubConfig", iotHubConfig);
-    throwTypeErrorIfParameterTypeMismatch("iotHubConfig", iotHubConfig, "object");
-
     validate(iotHubConfig);
     const config: ConnectionConfig = {
       sharedAccessKey: iotHubConfig.sharedAccessKey,

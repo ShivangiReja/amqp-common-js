@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-import { translate, MessagingError, throwTypeErrorIfParameterMissing, throwTypeErrorIfParameterTypeMismatch } from "./errors";
+import { translate, MessagingError } from "./errors";
 import { delay, isNode } from "./util/utils";
 import * as log from "./log";
 import { defaultRetryAttempts, defaultDelayBetweenRetriesInSeconds } from "./util/constants";
@@ -75,23 +75,17 @@ export interface RetryConfig<T> {
  * @ignore
  */
 function validateRetryConfig<T>(config: RetryConfig<T>): void {
-  throwTypeErrorIfParameterMissing("operation", config.operation);
-  throwTypeErrorIfParameterTypeMismatch("operation", config.operation, "function");
-
-  throwTypeErrorIfParameterMissing("connectionId", config.connectionId);
-
-  throwTypeErrorIfParameterMissing("operationType", config.operationType);
-  throwTypeErrorIfParameterTypeMismatch("operationType", config.operationType, "string");
-
-
-  if (config.times) {
-    throwTypeErrorIfParameterTypeMismatch("times", config.times, "number");
+  if (!config.operation) {
+    throw new TypeError("Missing 'operation' in retry configuration");
   }
 
-  if (config.delayInSeconds) {
-    throwTypeErrorIfParameterTypeMismatch("delayInSeconds", config.delayInSeconds, "number");
+  if (!config.connectionId) {
+    throw new TypeError("Missing 'connectionId' in retry configuration");
   }
 
+  if (!config.operationType) {
+    throw new TypeError("Missing 'operationType' in retry configuration");
+  }
 }
 
 

@@ -3,7 +3,6 @@
 
 import AsyncLock from "async-lock";
 export { AsyncLock };
-import { throwTypeErrorIfParameterMissing } from "../errors";
 /**
  * Describes the options that can be provided to create an async lock.
  * @interface AsyncLockOptions
@@ -247,7 +246,6 @@ export function executePromisesSequentially(promiseFactories: Array<any>, kickst
  * @return {boolean} boolean.
  */
 export function isIotHubConnectionString(connectionString: string): boolean {
-  throwTypeErrorIfParameterMissing("connectionString", connectionString);
   connectionString = String(connectionString);
 
   let result: boolean = false;
