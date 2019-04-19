@@ -87,7 +87,7 @@ export namespace ConnectionConfig {
 
     const parsedCS = parseConnectionString<ServiceBusConnectionStringModel>(connectionString);
     if (!parsedCS.Endpoint) {
-      throw new Error("Connection string is missing Endpoint.");
+      throw new TypeError("Missing Endpoint in Connection String.");
     }
 
     if (!parsedCS.Endpoint.endsWith("/")) parsedCS.Endpoint += "/";
@@ -121,19 +121,15 @@ export namespace ConnectionConfig {
     }
     config.endpoint = String(config.endpoint);
 
-    if (config.entityPath) {
-      config.entityPath = String(config.entityPath);
+    if (!config.host) {
+      throw new TypeError("Missing 'host' in configuration");
     }
+    config.host = String(config.host);
 
-    if (config.host) {
-      config.host = String(config.host);
+    if (options.isEntityPathRequired && !config.entityPath) {
+      throw new TypeError("Missing 'entityPath' in configuration");
     }
-
-    if (options.isEntityPathRequired) {
-      if (!config.entityPath) {
-        throw new TypeError("Missing 'entityPath' in configuration");
-      }
-    }
+    config.entityPath = String(config.entityPath);
 
     if (!config.sharedAccessKeyName) {
       throw new TypeError("Missing 'sharedAccessKeyName' in configuration");

@@ -80,7 +80,7 @@ export module EventHubConnectionConfig {
   export function create(connectionString: string, path?: string): EventHubConnectionConfig {
     const config = ConnectionConfig.create(connectionString, path);
     if (!config.entityPath) {
-      throw new Error(`Either provide "path" or the "connectionString": "${connectionString}", ` +
+      throw new TypeError(`Either provide "path" or the "connectionString": "${connectionString}", ` +
         `must contain EntityPath="<path-to-the-entity>".`);
     }
     return createFromConnectionConfig(config);
