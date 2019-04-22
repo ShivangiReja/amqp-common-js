@@ -99,7 +99,7 @@ describe("ConnectionContextBase", function () {
           version: "1.0.0"
         }
       });
-    }, /user-agent string cannot be more than 512/);
+    }, /user-agent string cannot be more than 512 characters/);
 
     done();
   });
