@@ -88,7 +88,7 @@ describe("ConnectionContextBase", function () {
     const path = "mypath";
     const config = ConnectionConfig.create(connectionString, path);
 
-    var userAgentString = "user-agent-string".repeat(32);
+    const userAgentString = "user-agent-string".repeat(32);
 
     should.throw(() => {
       ConnectionContextBase.create({
