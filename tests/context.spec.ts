@@ -102,6 +102,5 @@ describe("ConnectionContextBase", function () {
     }, /user-agent string cannot be more than 512/);
 
     done();
-
   });
 });
